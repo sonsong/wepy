@@ -1,0 +1,60 @@
+<style lang="less">
+    .container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+    }
+</style>
+
+<script>
+    import wepy from 'wepy'
+    import 'wepy-async-function'
+
+
+    export default class extends wepy.app {
+        //原生的一些配置
+        config = {
+            //注册所有的页面
+            pages: [
+                'pages/index',
+                'pages/todo'
+            ],
+            //系统基本配置，同原生
+            window: {
+                backgroundTextStyle: 'light',
+                navigationBarBackgroundColor: '#fff',
+                navigationBarTitleText: 'WeChat',
+                navigationBarTextStyle: 'black'
+            }
+        }
+
+        //全局自定义变量
+        globalData = {
+            userInfo: null
+        }
+
+        constructor () {
+            super()
+            this.use('requestfix')
+        }
+        
+        onLaunch() {
+        } 
+
+        getUserInfo(cb) {
+            const that = this
+            if (this.globalData.userInfo) {
+                return this.globalData.userInfo
+            }
+            wepy.getUserInfo({
+                success (res) {
+                    that.globalData.userInfo = res.userInfo
+                    cb && cb(res.userInfo)
+                }
+            })
+        }
+    }
+</script>
