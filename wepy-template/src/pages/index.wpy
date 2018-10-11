@@ -1,0 +1,77 @@
+<template>
+    <view class="index-wrap">
+        <button @tap="skipTodoPage" class="index-skipBtn">skip todo page</button>
+        <view>
+            <text>父组件num的值:{{num}}</text>
+            <button @tap="plus" class="index-addBtn">父组件改变num</button>
+        </view>
+        <!-- 
+            父组件向子组件传参，默认情况下父子组件的数据不会相互影响，
+            加入.sync修饰后，父组件改变传入参数的值，子组件会跟着改变，
+            但是子组件数据的改变不会影响父组件
+        -->
+        <counter :num.sync="num"/>
+        <!-- <counter :num="num"/> -->
+
+        <view>微信授权：</view>
+        <button open-type="getUserInfo" bindgetuserinfo="getUserInfo">微信授权</button>
+        <view>
+            <text>用户名:{{userInfo.nickName}}</text>
+        </view>
+    </view>
+</template>
+<script>
+    import wepy from 'wepy';
+    import Counter from '../components/counter';
+
+    export default class Index extends wepy.page{
+        config = {
+            navigationBarTitleText: 'Index'
+        }
+
+        components = {
+            counter: Counter
+        }
+
+        data = {
+            num: 0,
+            userInfo: {}
+        }
+
+        watch = {
+            
+        }
+
+        methods = {
+            skipTodoPage(){
+                wx.navigateTo({
+                    url: './todo',
+                })
+            },
+            plus(){
+                this.num++;
+            },
+            getUserInfo(res){
+                this.userInfo = res.detail.userInfo;
+            }
+        }
+
+        onLoad(){
+            this.$parent.getUserInfo((res) =>{
+                this.userInfo = res;
+            })
+        }
+    }
+</script>
+<style lang="less">
+    @import url('../less/page.less');
+    .index-wrap{
+        height: 100%;
+        .index-skipBtn{
+            width:50%;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+    }
+</style>

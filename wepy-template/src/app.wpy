@@ -1,17 +1,7 @@
-<style lang="less">
-    .container {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        box-sizing: border-box;
-    }
-</style>
-
 <script>
-    import wepy from 'wepy'
-    import 'wepy-async-function'
+    import wepy from 'wepy';
+    //在项目中开启 使用async 方法
+    import 'wepy-async-function';
 
 
     export default class extends wepy.app {
@@ -19,6 +9,7 @@
         config = {
             //注册所有的页面
             pages: [
+                'pages/index',
                 'pages/todo'
             ],
             //系统基本配置，同原生
@@ -39,21 +30,30 @@
             super()
             this.use('requestfix')
         }
-        
-        onLaunch() {
-        } 
 
         getUserInfo(cb) {
             const that = this
             if (this.globalData.userInfo) {
                 return this.globalData.userInfo
             }
-            wepy.getUserInfo({
-                success (res) {
-                    that.globalData.userInfo = res.userInfo
-                    cb && cb(res.userInfo)
+            // 查看是否授权
+            wx.getSetting({
+                success (res){
+                    if (res.authSetting['scope.userInfo']) {
+                        // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+                        wx.getUserInfo({
+                            success(res) {
+                                that.userInfo = res.userInfo;
+                                cb && cb(res.userInfo)
+                            }
+                        })
+                    }
+                },
+                fail(err) {
+                    console.log(`请先授权${err}`); 
                 }
             })
         }
     }
 </script>
+<style lang="less" scoped></style>

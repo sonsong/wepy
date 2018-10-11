@@ -1,66 +1,63 @@
-<style lang="less">
-  .counter {
-    text-align: left;
-    font-size: 12px;
-  }
-  .count {
-    font-size: 18px;
-    font-weight: bold;
-    &.red {
-      color: red;
-    }
-    &.green {
-      color: green;
-    }
-  }
-</style>
 <template>
-  <view class="counter {{style}}">
+  <view class="counter-wrap">
+    <text>counter组件:</text>
     <button @tap="plus" size="mini">  +  </button>
+    <text class="counter_count" :class="{counter_red: num > 0, counter_green: num < 1}"> {{num}} </text>
     <button @tap="minus" size="mini">  -  </button>
-    <text class="count" :class="{red: num > 55, green: num < 45}"> {{num}} </text>
+    <view>计算属性:{{doubleNum}}</view>
   </view>
 </template>
 <script>
-  import wepy from 'wepy'
+    import wepy from 'wepy';
 
-  export default class Counter extends wepy.component {
-    props = {
-      num: {
-        type: [Number, String],
-        coerce: function (v) {
-          return +v
-        },
-        default: 50
-      }
-    }
+    export default class Counter extends wepy.component {
+        //子组件接收父组件传过的参数，twoWay 属性默认为false,即，子组件该参数的改变并不会影响父组件的值
+        //twoWay = true,后，子组件将会影响父组件，当父组件传参时加了.sync修饰时，父子组件将形成双向数据绑定了
+        props = {
+            num:{
+                type: Number,
+                default: 0,
+                twoWay: true
+            }
+        }
 
-    data = {
-    }
-    events = {
-      'index-broadcast': (...args) => {
-        let $event = args[args.length - 1]
-        console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
-      }
-    }
+        events = {
+        }
 
-    watch = {
-      num (curVal, oldVal) {
-        console.log(`旧值：${oldVal}，新值：${curVal}`)
-      }
-    }
+        computed = {
+            doubleNum(){
+                return this.num * 2;
+            }
+        }
 
-    methods = {
-      plus () {
-        this.num = this.num + 1
-        console.log(this.$name + ' plus tap')
+        watch = {
+            num(newVal){
+                console.log(`我变成了${newVal}`);
+            }
+        }
 
-        this.$emit('index-emit', 1, 2, 3)
-      },
-      minus () {
-        this.num = this.num - 1
-        console.log(this.$name + ' minus tap')
-      }
+        methods = {
+            plus () {
+                this.num++;
+            },
+            minus () {
+                this.num--;
+            }
+        }
     }
-  }
 </script>
+<style lang="less" scoped> 
+    .counter-wrap{
+        .counter_count{
+            height: 30px;
+            line-height: 30px;
+            font-size: 14px;
+        }
+        .counter_red{
+            color:red;
+        }
+        .counter_green{
+            color:green;
+        }
+    }
+</style>
