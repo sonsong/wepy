@@ -1,0 +1,83 @@
+<template>
+    <view class="td-wrap">
+        <view class="td-add">
+            <input placeholder="please input you will todo..."  
+                name="todo" value="{{todo}}" class="td-add-input" confirm-type="done"
+                placeholder-class="td-placehold" bindinput="doneInput"
+                bindconfirm="doneInput" focus
+            />
+            <button type="primary" size="mini" @tap="addTodo" class="td-add-addBtn">Add</button>
+        </view>
+        <scroll-view scroll-y>
+            <view class="td-list">
+                <repeat for="{{todos}}" key="index" index="index" item="item">
+                    <view class="td-item">
+                        <checkbox class="td-item-checkBox" value="{{item.value}}" 
+                            checked="{{item.complete}}"
+                            @tap="complete({{index}})"
+                        />
+                        <view class="td-item-text" :class="{'td-item-done' : item.complete}">{{item.value}}</view>
+                        <button type="warn" size="mini" @tap="delTodo({{index}})" class="td-item-delBtn">Delete</button>
+                    </view>
+                </repeat>
+            </view>
+            <view class="td-operate">
+            </view>
+        </scroll-view>
+        <toast/>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import toast from 'wepy-com-toast';
+    import showToast from '@/utils/showToast.js';
+
+    export default class Index extends wepy.page {
+        config = {
+            navigationBarTitleText: 'TODOS'
+        }
+
+        components = {
+            toast
+        }
+
+        data = {
+            todo:"",
+            todos:[]
+        }
+
+        methods = {
+            doneInput(e){
+                this.todo = e.detail.value;
+            },
+            addTodo(){
+                if(this.todo !== ""){
+                    this.todos.unshift({
+                        value: this.todo,
+                        complete: false
+                    });
+                    this.todo = "";
+                }else{
+                    showToast("please input todo", "error", this);
+                }
+            },
+            complete(index){
+                this.todos[index].complete = !this.todos[index].complete;
+            },
+            delTodo(index){
+                this.todos.splice(index, 1);
+            },
+        }
+
+        events = {
+
+        }
+
+        onLoad(){
+            console.log("todo页面加载...");
+        }
+
+    }
+</script>
+<style lang="less" src="../less/todo.less"></style>

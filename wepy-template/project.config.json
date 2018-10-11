@@ -1,0 +1,15 @@
+{
+	"description": "基于wepy框架的微信小程序模板",
+	"setting": {
+		"urlCheck": true,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"appid": "wxc5af83bc39bc80f8",
+	"projectname": "wepy-template",
+	"miniprogramRoot": "./dist",
+	"condition": {}
+}

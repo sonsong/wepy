@@ -1,0 +1,50 @@
+.td-wrap {
+  width: 100%;
+  font-size: 16px;
+  color: #000;
+  font-family: 'Times New Roman';
+}
+.td-wrap .td-add {
+  display: flex;
+  height: 50px;
+  line-height: 50px;
+}
+.td-wrap .td-add .td-add-input {
+  border: 1px solid pink;
+  padding: 5px 0px 5px 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  width: 70%;
+}
+.td-wrap .td-add .td-add-addBtn {
+  height: 40px;
+  line-height: 40px;
+  margin-top: 5px;
+}
+.td-wrap .td-add .td-placehold {
+  font-size: 14px;
+}
+.td-wrap .td-list {
+  width: 100%;
+}
+.td-wrap .td-list .td-item {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+}
+.td-wrap .td-list .td-item .td-item-checkBox {
+  margin: 0 10px;
+}
+.td-wrap .td-list .td-item .td-item-text {
+  width: 90%;
+}
+.td-wrap .td-list .td-item .td-item-delBtn {
+  height: 30px;
+  margin-top: 10px;
+  margin-right: 25px;
+}
+.td-wrap .td-list .td-item .td-item-done {
+  text-decoration: line-through;
+  color: grey;
+}
